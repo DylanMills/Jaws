@@ -55,8 +55,11 @@
 ![Rendering](https://raw.githubusercontent.com/DylanMills/Jaws/main/Images/RimDiagram.png)
 
 ## Snippets
-### Texture Generator Script
-Used to generate textures from a rendertexture source
+### Downsample Script
+This script downsamples using mipmapping
+It creates a new render texture at the destination parameter
+This is useful for optimizing graphics operations.
+Mipmapping allows for the renderer to use less detailed textures when the texel / pixel size diffent is high.
 ```
 void OnRenderImage(RenderTexture source, RenderTexture destination){ 
  
@@ -109,6 +112,8 @@ void OnRenderImage(RenderTexture source, RenderTexture destination){
 ### Colored Shadow:
 This is a surface shader which uses a lambert lighting with a toon ramp
 It takes shadowcolor as a parameter which is used to color the dark areas of the surface
+Thi is great for games with a simple artstyle that wants to have a unique, stylized shadow color. 
+
 ```
 Shader "ColoredShadow" 
 { 
