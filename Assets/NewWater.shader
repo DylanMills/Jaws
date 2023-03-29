@@ -30,7 +30,6 @@ Shader "Custom/NewWater"
             half3 ramp = tex2D(_MainTex, float(diff)).rgb;//ramp effect with the colors of the diffuse lighting
             half4 c;
             c.rgb = s.Albedo * _LightColor0.rgb * ramp * atten * ramp;//the creation of the final outputted colors
-       
             return c;
         }
 
