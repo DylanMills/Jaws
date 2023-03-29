@@ -1,10 +1,9 @@
 
 # Jaws
  
- Dylan Mills 100750193
- Individual Assignment 2
+ #### Dylan Mills 100750193 |  Individual Assignment 2
 
-
+ ## Forward and Deferred Rendering
 ![Rendering](https://raw.githubusercontent.com/DylanMills/Jaws/main/Images/RenderingDiagram.png)
 
 ## Additions
@@ -56,10 +55,10 @@
 
 ## Snippets
 ### Downsample Script
-This script downsamples using mipmapping
-It creates a new render texture at the destination parameter
-This is useful for optimizing graphics operations.
-Mipmapping allows for the renderer to use less detailed textures when the texel / pixel size diffent is high.
+* This script downsamples using mipmapping
+* It creates a new render texture at the destination parameter
+* This is useful for optimizing graphics operations.
+* Mipmapping allows for the renderer to use less detailed textures when the texel / pixel size diffent is high.
 ```
 void OnRenderImage(RenderTexture source, RenderTexture destination){ 
  
@@ -110,9 +109,9 @@ void OnRenderImage(RenderTexture source, RenderTexture destination){
         Graphics.Blit(currentSource, destination);     } 
 ```
 ### Colored Shadow:
-This is a surface shader which uses a lambert lighting with a toon ramp
-It takes shadowcolor as a parameter which is used to color the dark areas of the surface
-Thi is great for games with a simple artstyle that wants to have a unique, stylized shadow color. 
+* This is a surface shader which uses a lambert lighting with a toon ramp
+* It takes ShadowColor as a parameter which is used to color the dark areas of the surface
+* This great for games with a simple art-style that wants to have a unique, stylized shadow color. 
 
 ```
 Shader "ColoredShadow" 
@@ -164,7 +163,7 @@ Shader "ColoredShadow"
   ```
 ## Download
 
-You can [download](https://github.com/DylanMills/Jaws/releases/tag/beta) the build here.
+You can [download](https://github.com/DylanMills/Jaws/releases/tag/release) the build here.
 
 
 ## Credits

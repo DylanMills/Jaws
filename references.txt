@@ -1,9 +1,0 @@
-references:
-https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633
-https://www.cgtrader.com/items/24982/download-page
-https://www.cgtrader.com/items/2712314/download-page
-
-ADJUSTED PARAMETERS for water to allow for more wave lengths
-added functional color tinting
-
-replaced skybox
