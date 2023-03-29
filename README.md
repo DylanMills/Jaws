@@ -16,6 +16,9 @@
   -  added functional color tinting
 * Replaced Skybox
 
+* Bloom
+-  
+* Outlining
 
 ## Download
 
