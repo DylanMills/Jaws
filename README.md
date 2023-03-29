@@ -9,13 +9,14 @@
 
 ## Additions
 
-* Reworked all materials, and shaders to match the project requirements
-  -  Adjusted parameter margins
-  -  Revamped Wave
-  -  Optimized outline shader
-  -  added functional color tinting
+
 * Replaced Skybox
-* Square shaped wave is created by 
+* Added movement
+* Created scene
+* Optimized meshes to reduce file size
+* Reworked all materials, and shaders to match the project requirements
+* Completely revamped wave shader
+* Square shaped wave is possible via the following snippet(read the comments!)
 ```        void vert(inout appdata_full i) {
             //Using the time and vertex x coordinate to generate a sine wave
             float displacement = sin((i.vertex.x + _Time.y * _WaveSpeed) * _WaveFrequency); 
@@ -36,8 +37,12 @@
 ```
         
 * Bloom
--  
+-  Adjusted parameters
 * Outlining
+-  Adjusted parameter margins
+-  Added better color controls
+-  Added functional color tinting
+-  Various optimizations for improved performance
 * Hologram
 - Making use of Rim Shading to create phantom Sharks
 ```         //get the dot product between the view direction and the surface normal, to create a value betwen 0 and 1
@@ -49,6 +54,105 @@
 ```
 ![Rendering](https://raw.githubusercontent.com/DylanMills/Jaws/main/Images/RimDiagram.png)
 
+## Snippets
+```
+void OnRenderImage(RenderTexture source, RenderTexture destination){ 
+ 
+        int width = source.width / integerRange;
+        int height = source.height / integerRange;
+        RenderTextureFormat format = source.format;
+        RenderTexture[] textures = new RenderTexture[16]; 
+ 
+        RenderTexture currentDestination = textures[0] = RenderTexture.GetTemporary(width, height, 0, format); 
+ 
+        Graphics.Blit(source, currentDestination); 
+        RenderTexture currentSource = currentDestination; 
+        Graphics.Blit(currentSource, destination);
+        RenderTexture.ReleaseTemporary(currentSource);
+
+        int i = 1;
+
+        for (; i < iterations; i++) {
+            width /= 2;
+            height /= 2; 
+            currentDestination = textures[i] = RenderTexture.GetTemporary(width, height, 0, format); 
+
+            if (height < 2) {
+                break; 
+            } 
+
+            currentDestination = RenderTexture.GetTemporary(width, height, 0, format); 
+            Graphics.Blit(currentSource, currentDestination); 
+            RenderTexture.ReleaseTemporary(currentSource);
+            currentSource = currentDestination; 
+        } 
+ 
+        for (; i < iterations; i++) {
+        Graphics.Blit(currentSource, currentDestination); 
+        RenderTexture.ReleaseTemporary(currentSource);
+        currentSource = currentDestination; 
+ 
+        } 
+ 
+        for (i -= 2; i >= 0; i--) {
+        currentDestination = textures[i];
+        textures[i] = null; 
+        Graphics.Blit(currentSource, currentDestination); 
+        RenderTexture.ReleaseTemporary(currentSource);
+        currentSource = currentDestination; 
+        } 
+ 
+        Graphics.Blit(currentSource, destination);     } 
+```
+Colored Shadow
+```
+Shader "ColoredShadow" 
+{ 
+    Properties{ 
+     _Color("Main Color", Color) = (1,1,1,1) 
+     _MainTex("Base (RGB)", 2D) = "white" {} 
+    _ShadowColor("Shadow Color", Color) = (1,1,1,1) 
+    } 
+        SubShader{ 
+ 
+            Tags { "RenderType" = "Opaque" } 
+            LOD 200 
+ 
+        CGPROGRAM 
+        #pragma surface surf CSLambert 
+ 
+        sampler2D _MainTex;         
+        fixed4 _Color;         
+        fixed4 _ShadowColor; 
+ 
+        struct Input { 
+            float2 uv_MainTex; 
+        }; 
+ 
+        half4 LightingCSLambert(SurfaceOutput s, half3 lightDir, half atten) { 
+ 
+            fixed diff = max(0, dot(s.Normal, lightDir)); 
+ 
+            half4 c; 
+            c.rgb = s.Albedo * _LightColor0.rgb * (diff * atten * 0.5); 
+ 
+            //shadow color 
+            c.rgb += _ShadowColor.xyz * (1.0 - atten); 
+            c.a = s.Alpha;
+            return c; 
+        } 
+ 
+        void surf(Input IN, inout SurfaceOutput o) {
+            half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color; 
+            o.Albedo = c.rgb; 
+            o.Alpha = c.a; 
+        } 
+        ENDCG 
+    } 
+ 
+        Fallback "Diffuse" } 
+
+  ```
 ## Download
 
 You can [download](https://github.com/DylanMills/Jaws/releases/tag/beta) the build here.
