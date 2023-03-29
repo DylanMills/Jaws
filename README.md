@@ -55,6 +55,8 @@
 ![Rendering](https://raw.githubusercontent.com/DylanMills/Jaws/main/Images/RimDiagram.png)
 
 ## Snippets
+### Texture Generator Script
+Used to generate textures from a rendertexture source
 ```
 void OnRenderImage(RenderTexture source, RenderTexture destination){ 
  
@@ -70,9 +72,9 @@ void OnRenderImage(RenderTexture source, RenderTexture destination){
         Graphics.Blit(currentSource, destination);
         RenderTexture.ReleaseTemporary(currentSource);
 
-        int i = 1;
+       
 
-        for (; i < iterations; i++) {
+        for ( int i = 1;; i < iterations; i++) {
             width /= 2;
             height /= 2; 
             currentDestination = textures[i] = RenderTexture.GetTemporary(width, height, 0, format); 
@@ -104,7 +106,9 @@ void OnRenderImage(RenderTexture source, RenderTexture destination){
  
         Graphics.Blit(currentSource, destination);     } 
 ```
-Colored Shadow
+### Colored Shadow:
+This is a surface shader which uses a lambert lighting with a toon ramp
+It takes shadowcolor as a parameter which is used to color the dark areas of the surface
 ```
 Shader "ColoredShadow" 
 { 
